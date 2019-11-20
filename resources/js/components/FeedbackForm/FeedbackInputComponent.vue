@@ -1,6 +1,7 @@
 <template>
-    <div class="row">
+    <div class="row mb-3">
         <div class="col-12">
+            <textarea type="text" class="form-control" placeholder="Ваше обращение"></textarea>
         </div>
     </div>
 </template>
@@ -13,5 +14,5 @@
         }
     }
 </script>
-<style>
+<style scoped>
 </style>
