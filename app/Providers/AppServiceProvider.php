@@ -4,6 +4,9 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
+use App\Support\FeedbackFile\FeedbackFile;
+use App\Support\FeedbackFile\JsonFeedbackFile;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -13,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(FeedbackFile::class, JsonFeedbackFile::class);
     }
 
     /**

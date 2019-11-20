@@ -7,8 +7,9 @@
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     </head>
     <body>
-        <div id="app">
-            <app-component></app-component>
+        <div id="app" class="container">
+            <feedback-form></feedback-form>
+            <alert-component></alert-component>
         </div>
         <script src="{{ mix('js/app.js') }}"></script>
     </body>

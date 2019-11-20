@@ -3,12 +3,17 @@ import axios from 'axios';
 import Response from '../Support/Response';
 import config from '../config/feedback';
 
-export default class FeedbackSender
+class FeedbackSender
 {
-    async send(feedback)
+    async create(feedback)
     {
-        const response = await axios.post(config.send_url, feedback);
+        console.log(feedback);
+        const url = config.host+config.create_url;
 
+        const response = await axios.post(url, feedback);
+        
         return new Response(response.status, response.data);
     }
 }
+
+export default new FeedbackSender;

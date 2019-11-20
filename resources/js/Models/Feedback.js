@@ -5,7 +5,7 @@ export default class Feedback
         this.name = name;
         this.phone = phone;
         this.text = text;
-        this.uploadWay = uploadWay;
+        this.uploadway = uploadWay;
     }
 
 }

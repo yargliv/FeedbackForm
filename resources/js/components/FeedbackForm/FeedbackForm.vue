@@ -9,7 +9,7 @@
             <name-input-component v-model="name"></name-input-component>
             <phone-input-component v-model="phone"></phone-input-component>
             <feedback-input-component v-model="feedback"></feedback-input-component>
-            <upload-way-input-component v-model="uploadWay"></upload-way-input-component>
+            <upload-way-input-component v-model="uploadway"></upload-way-input-component>
             <button class="btn btn-success" @click="sendFeedback">Отправить</button>
         </div>
     </div>
@@ -25,6 +25,8 @@
 
     import FeedbackSender from '../../Services/FeedbackSender';
 
+    import Feedback from '../../Models/Feedback';
+
     export default {
         components: {
             NameInputComponent,
@@ -34,19 +36,19 @@
         },
         data() {
             return {
-                name: null,
-                phone: null,
-                feedback: null,
-                uploadWay: null,
+                name: 'Petr',
+                phone: '8910385949',
+                text: 'lorem ipsum',
+                uploadway: 'file_save',
             }
         },
         methods: {
             async sendFeedback() {
-                const feedback = new Feedback(this.name, this.phone, this.feedback, this.uploadWay);
-                const result = await FeedbackSender.send(feedback);
-                
+                const feedback = new Feedback(this.name, this.phone, this.text, this.uploadway);
+                const result = await FeedbackSender.create(feedback);
+                console.log(result);
                 if(result.success) {
-                    this.clearFields();
+                    // this.clearFields();
                     eventBus.$emit('show-alert', {
                         type: 'alert-success',
                         title: 'Ваш отзыв успешно отправлен!'
