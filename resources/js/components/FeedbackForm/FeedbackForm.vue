@@ -65,6 +65,7 @@
 
             },
             validateFields() {
+                // true if is not passed validation, else - false
                 if(this.name == '') this.validation.name = true;
                 else this.validation.name = false;
 

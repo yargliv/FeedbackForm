@@ -1998,6 +1998,7 @@ __webpack_require__.r(__webpack_exports__);
       }, null, this, [[3, 11]]);
     },
     validateFields: function validateFields() {
+      // true if is not passed validation, else - false
       if (this.name == '') this.validation.name = true;else this.validation.name = false;
       if (this.phone == '') this.validation.phone = true;else this.validation.phone = false;
       if (this.text == '') this.validation.text = true;else this.validation.text = false;
@@ -39105,9 +39106,14 @@ var render = function() {
           }
         },
         [
-          _c("option", { attrs: { disabled: "", selected: "" } }, [
-            _vm._v("Выберите куда сохранить отзыв")
-          ]),
+          _c(
+            "option",
+            {
+              attrs: { disabled: "" },
+              domProps: { selected: _vm.uploadway == null }
+            },
+            [_vm._v("Выберите куда сохранить отзыв")]
+          ),
           _vm._v(" "),
           _vm._l(_vm.types, function(type) {
             return _c(
