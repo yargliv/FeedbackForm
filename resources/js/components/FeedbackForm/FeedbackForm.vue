@@ -6,10 +6,10 @@
                     <h3>Оставьте Ваш отзыв</h3>
                 </div>
             </div>
-            <name-input-component v-model="name"></name-input-component>
-            <phone-input-component v-model="phone"></phone-input-component>
-            <feedback-input-component v-model="feedback"></feedback-input-component>
-            <upload-way-input-component v-model="uploadway"></upload-way-input-component>
+            <name-input-component :isInvalid="validation.name" v-model="name"></name-input-component>
+            <phone-input-component :isInvalid="validation.phone" v-model="phone"></phone-input-component>
+            <feedback-input-component :isInvalid="validation.text" v-model="text"></feedback-input-component>
+            <upload-way-input-component :isInvalid="validation.uploadway" v-model="uploadway"></upload-way-input-component>
             <button class="btn btn-success" @click="sendFeedback">Отправить</button>
         </div>
     </div>
@@ -21,11 +21,12 @@
     import FeedbackInputComponent from './FeedbackInputComponent';
     import UploadWayInputComponent from './UploadWayInputComponent';
 
-    import eventBus from '../../eventBus';
-
-    import FeedbackSender from '../../Services/FeedbackSender';
 
     import Feedback from '../../Models/Feedback';
+    import FeedbackSender from '../../Services/FeedbackSender';
+
+    import eventBus from '../../eventBus';
+    import {SHOW_ALERT, success_alert, error_alert} from '../../config/alert_types';
 
     export default {
         components: {
@@ -36,35 +37,60 @@
         },
         data() {
             return {
-                name: 'Petr',
-                phone: '8910385949',
-                text: 'lorem ipsum',
-                uploadway: 'file_save',
+                name: '',
+                phone: '',
+                text: '',
+                uploadway: null,
+                validation: {
+                    name: false,
+                    phone: false,
+                    text: false,
+                    uploadway: false, 
+                }
             }
         },
         methods: {
             async sendFeedback() {
                 const feedback = new Feedback(this.name, this.phone, this.text, this.uploadway);
-                const result = await FeedbackSender.create(feedback);
-                console.log(result);
-                if(result.success) {
-                    // this.clearFields();
-                    eventBus.$emit('show-alert', {
-                        type: 'alert-success',
-                        title: 'Ваш отзыв успешно отправлен!'
-                    });
-                } else {
-                    eventBus.$emit('show-alert', {
-                        type: 'alert-danger',
-                        title: 'К сожалению, произошла ошибка...'
-                    });
+                const validated = this.validateFields();
+                console.log(validated);
+                if(validated) {
+                    try {
+                        const result = await FeedbackSender.create(feedback);
+                        console.log(result);
+                        eventBus.$emit(SHOW_ALERT, success_alert);
+                        this.clearFields();
+                    } catch(exception) {
+                        console.log('bad');
+                        eventBus.$emit(SHOW_ALERT, error_alert);
+                    }
                 }
+
+            },
+            validateFields() {
+                if(this.name == '') this.validation.name = true;
+                else this.validation.name = false;
+
+                if(this.phone == '') this.validation.phone = true;
+                else this.validation.phone = false;
+
+                if(this.text == '') this.validation.text = true;
+                else this.validation.text = false;
+
+                if(this.uploadway == null) this.validation.uploadway = true;
+                else this.validation.uploadway = false;
+
+                return !(this.validation.name || this.validation.phone || this.validation.text || this.validation.uploadway);
             },
             clearFields() {
-                this.name = null;
-                this.phone = null;
-                this.feedback = null;
-                this.uploadWay = null;
+                this.name = '';
+                this.phone = '';
+                this.text = '';
+                this.uploadway = null;
+                this.validation.name = false;
+                this.validation.phone = false;
+                this.validation.text = false;
+                this.validation.uploadway = false;
             }
         }
     }

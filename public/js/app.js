@@ -1908,9 +1908,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _PhoneInputComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./PhoneInputComponent */ "./resources/js/components/FeedbackForm/PhoneInputComponent.vue");
 /* harmony import */ var _FeedbackInputComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./FeedbackInputComponent */ "./resources/js/components/FeedbackForm/FeedbackInputComponent.vue");
 /* harmony import */ var _UploadWayInputComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./UploadWayInputComponent */ "./resources/js/components/FeedbackForm/UploadWayInputComponent.vue");
-/* harmony import */ var _eventBus__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../eventBus */ "./resources/js/eventBus.js");
+/* harmony import */ var _Models_Feedback__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../Models/Feedback */ "./resources/js/Models/Feedback.js");
 /* harmony import */ var _Services_FeedbackSender__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../Services/FeedbackSender */ "./resources/js/Services/FeedbackSender.js");
-/* harmony import */ var _Models_Feedback__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../Models/Feedback */ "./resources/js/Models/Feedback.js");
+/* harmony import */ var _eventBus__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../eventBus */ "./resources/js/eventBus.js");
+/* harmony import */ var _config_alert_types__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../config/alert_types */ "./resources/js/config/alert_types.js");
 
 //
 //
@@ -1929,6 +1930,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 
@@ -1945,52 +1947,75 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      name: 'Petr',
-      phone: '8910385949',
-      text: 'lorem ipsum',
-      uploadway: 'file_save'
+      name: '',
+      phone: '',
+      text: '',
+      uploadway: null,
+      validation: {
+        name: false,
+        phone: false,
+        text: false,
+        uploadway: false
+      }
     };
   },
   methods: {
     sendFeedback: function sendFeedback() {
-      var feedback, result;
+      var feedback, validated, result;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.async(function sendFeedback$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              feedback = new _Models_Feedback__WEBPACK_IMPORTED_MODULE_7__["default"](this.name, this.phone, this.text, this.uploadway);
-              _context.next = 3;
-              return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.awrap(_Services_FeedbackSender__WEBPACK_IMPORTED_MODULE_6__["default"].create(feedback));
+              feedback = new _Models_Feedback__WEBPACK_IMPORTED_MODULE_5__["default"](this.name, this.phone, this.text, this.uploadway);
+              validated = this.validateFields();
+              console.log(validated);
 
-            case 3:
-              result = _context.sent;
-              console.log(result);
-
-              if (result.success) {
-                // this.clearFields();
-                _eventBus__WEBPACK_IMPORTED_MODULE_5__["default"].$emit('show-alert', {
-                  type: 'alert-success',
-                  title: 'Ваш отзыв успешно отправлен!'
-                });
-              } else {
-                _eventBus__WEBPACK_IMPORTED_MODULE_5__["default"].$emit('show-alert', {
-                  type: 'alert-danger',
-                  title: 'К сожалению, произошла ошибка...'
-                });
+              if (!validated) {
+                _context.next = 17;
+                break;
               }
 
-            case 6:
+              _context.prev = 4;
+              _context.next = 7;
+              return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.awrap(_Services_FeedbackSender__WEBPACK_IMPORTED_MODULE_6__["default"].create(feedback));
+
+            case 7:
+              result = _context.sent;
+              console.log(result);
+              _eventBus__WEBPACK_IMPORTED_MODULE_7__["default"].$emit(_config_alert_types__WEBPACK_IMPORTED_MODULE_8__["SHOW_ALERT"], _config_alert_types__WEBPACK_IMPORTED_MODULE_8__["success_alert"]);
+              this.clearFields();
+              _context.next = 17;
+              break;
+
+            case 13:
+              _context.prev = 13;
+              _context.t0 = _context["catch"](4);
+              console.log('bad');
+              _eventBus__WEBPACK_IMPORTED_MODULE_7__["default"].$emit(_config_alert_types__WEBPACK_IMPORTED_MODULE_8__["SHOW_ALERT"], _config_alert_types__WEBPACK_IMPORTED_MODULE_8__["error_alert"]);
+
+            case 17:
             case "end":
               return _context.stop();
           }
         }
-      }, null, this);
+      }, null, this, [[4, 13]]);
+    },
+    validateFields: function validateFields() {
+      if (this.name == '') this.validation.name = true;else this.validation.name = false;
+      if (this.phone == '') this.validation.phone = true;else this.validation.phone = false;
+      if (this.text == '') this.validation.text = true;else this.validation.text = false;
+      if (this.uploadway == null) this.validation.uploadway = true;else this.validation.uploadway = false;
+      return !(this.validation.name || this.validation.phone || this.validation.text || this.validation.uploadway);
     },
     clearFields: function clearFields() {
-      this.name = null;
-      this.phone = null;
-      this.feedback = null;
-      this.uploadWay = null;
+      this.name = '';
+      this.phone = '';
+      this.text = '';
+      this.uploadway = null;
+      this.validation.name = false;
+      this.validation.phone = false;
+      this.validation.text = false;
+      this.validation.uploadway = false;
     }
   }
 });
@@ -2014,8 +2039,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {};
+  props: {
+    text: {
+      required: true
+    },
+    isInvalid: {
+      "default": false
+    }
+  },
+  model: {
+    prop: 'text',
+    event: 'change'
   }
 });
 
@@ -2038,8 +2072,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {};
+  props: {
+    name: {
+      required: true
+    },
+    isInvalid: {
+      "default": false
+    }
+  },
+  model: {
+    prop: 'name',
+    event: 'change'
   }
 });
 
@@ -2062,8 +2105,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  data: function data() {
-    return {};
+  props: {
+    phone: {
+      required: true
+    },
+    isInvalid: {
+      "default": false
+    }
+  },
+  model: {
+    prop: 'phone',
+    event: 'change'
   }
 });
 
@@ -2078,6 +2130,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _config_uploadways__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../config/uploadways */ "./resources/js/config/uploadways.js");
 //
 //
 //
@@ -2087,16 +2140,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    uploadway: {
+      required: true
+    },
+    isInvalid: {
+      "default": false
+    }
+  },
+  model: {
+    prop: 'uploadway',
+    event: 'change'
+  },
   data: function data() {
     return {
-      types: [{
-        name: 'db_save',
-        title: 'Сохранить в базу данных'
-      }, {
-        name: 'file_save',
-        title: 'Сохранить в файл'
-      }]
+      types: _config_uploadways__WEBPACK_IMPORTED_MODULE_0__["default"]
     };
   }
 });
@@ -38833,6 +38894,7 @@ var render = function() {
         _vm._m(0),
         _vm._v(" "),
         _c("name-input-component", {
+          attrs: { isInvalid: _vm.validation.name },
           model: {
             value: _vm.name,
             callback: function($$v) {
@@ -38843,6 +38905,7 @@ var render = function() {
         }),
         _vm._v(" "),
         _c("phone-input-component", {
+          attrs: { isInvalid: _vm.validation.phone },
           model: {
             value: _vm.phone,
             callback: function($$v) {
@@ -38853,16 +38916,18 @@ var render = function() {
         }),
         _vm._v(" "),
         _c("feedback-input-component", {
+          attrs: { isInvalid: _vm.validation.text },
           model: {
-            value: _vm.feedback,
+            value: _vm.text,
             callback: function($$v) {
-              _vm.feedback = $$v
+              _vm.text = $$v
             },
-            expression: "feedback"
+            expression: "text"
           }
         }),
         _vm._v(" "),
         _c("upload-way-input-component", {
+          attrs: { isInvalid: _vm.validation.uploadway },
           model: {
             value: _vm.uploadway,
             callback: function($$v) {
@@ -38915,23 +38980,23 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row mb-3" }, [
-      _c("div", { staticClass: "col-12" }, [
-        _c("textarea", {
-          staticClass: "form-control",
-          attrs: { type: "text", placeholder: "Ваше обращение" }
-        })
-      ])
+  return _c("div", { staticClass: "row mb-3" }, [
+    _c("div", { staticClass: "col-12" }, [
+      _c("textarea", {
+        staticClass: "form-control",
+        class: { "is-invalid": _vm.isInvalid },
+        attrs: { type: "text", placeholder: "Ваше обращение" },
+        domProps: { value: _vm.text },
+        on: {
+          change: function($event) {
+            return _vm.$emit("change", $event.target.value)
+          }
+        }
+      })
     ])
-  }
-]
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -38953,23 +39018,23 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row mb-3" }, [
-      _c("div", { staticClass: "col-12" }, [
-        _c("input", {
-          staticClass: "form-control",
-          attrs: { type: "text", placeholder: "Введите Ваше имя" }
-        })
-      ])
+  return _c("div", { staticClass: "row mb-3" }, [
+    _c("div", { staticClass: "col-12" }, [
+      _c("input", {
+        staticClass: "form-control",
+        class: { "is-invalid": _vm.isInvalid },
+        attrs: { type: "text", placeholder: "Введите Ваше имя" },
+        domProps: { value: _vm.name },
+        on: {
+          change: function($event) {
+            return _vm.$emit("change", $event.target.value)
+          }
+        }
+      })
     ])
-  }
-]
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -38991,23 +39056,23 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row mb-3" }, [
-      _c("div", { staticClass: "col-12" }, [
-        _c("input", {
-          staticClass: "form-control",
-          attrs: { type: "text", placeholder: "Введите Ваше номер телефона" }
-        })
-      ])
+  return _c("div", { staticClass: "row mb-3" }, [
+    _c("div", { staticClass: "col-12" }, [
+      _c("input", {
+        staticClass: "form-control",
+        class: { "is-invalid": _vm.isInvalid },
+        attrs: { type: "text", placeholder: "Введите Ваше номер телефона" },
+        domProps: { value: _vm.phone },
+        on: {
+          change: function($event) {
+            return _vm.$emit("change", $event.target.value)
+          }
+        }
+      })
     ])
-  }
-]
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -39033,11 +39098,29 @@ var render = function() {
     _c("div", { staticClass: "col-12" }, [
       _c(
         "select",
-        { staticClass: "form-control" },
-        _vm._l(_vm.types, function(type) {
-          return _c("option", { key: type.name }, [_vm._v(_vm._s(type.title))])
-        }),
-        0
+        {
+          staticClass: "form-control",
+          class: { "is-invalid": _vm.isInvalid },
+          on: {
+            change: function($event) {
+              return _vm.$emit("change", $event.target.value)
+            }
+          }
+        },
+        [
+          _c("option", { attrs: { disabled: "", selected: "" } }, [
+            _vm._v("Выберите куда сохранить файл")
+          ]),
+          _vm._v(" "),
+          _vm._l(_vm.types, function(type) {
+            return _c(
+              "option",
+              { key: type.name, domProps: { value: type.name } },
+              [_vm._v(_vm._s(type.title))]
+            )
+          })
+        ],
+        2
       )
     ])
   ])
@@ -51223,8 +51306,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _Support_Response__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Support/Response */ "./resources/js/Support/Response.js");
-/* harmony import */ var _config_feedback__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../config/feedback */ "./resources/js/config/feedback.js");
+/* harmony import */ var _config_feedback__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../config/feedback */ "./resources/js/config/feedback.js");
 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -51232,7 +51314,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
 
 
 
@@ -51252,16 +51333,15 @@ function () {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              console.log(feedback);
-              url = _config_feedback__WEBPACK_IMPORTED_MODULE_3__["default"].host + _config_feedback__WEBPACK_IMPORTED_MODULE_3__["default"].create_url;
-              _context.next = 4;
+              url = _config_feedback__WEBPACK_IMPORTED_MODULE_2__["default"].host + _config_feedback__WEBPACK_IMPORTED_MODULE_2__["default"].create_url;
+              _context.next = 3;
               return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.awrap(axios__WEBPACK_IMPORTED_MODULE_1___default.a.post(url, feedback));
 
-            case 4:
+            case 3:
               response = _context.sent;
-              return _context.abrupt("return", new _Support_Response__WEBPACK_IMPORTED_MODULE_2__["default"](response.status, response.data));
+              return _context.abrupt("return", response.data);
 
-            case 6:
+            case 5:
             case "end":
               return _context.stop();
           }
@@ -51274,31 +51354,6 @@ function () {
 }();
 
 /* harmony default export */ __webpack_exports__["default"] = (new FeedbackSender());
-
-/***/ }),
-
-/***/ "./resources/js/Support/Response.js":
-/*!******************************************!*\
-  !*** ./resources/js/Support/Response.js ***!
-  \******************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Response; });
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Response = function Response(status) {
-  var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-  _classCallCheck(this, Response);
-
-  if (status == 200) this.success = true;else this.success = false;
-  this.data = data;
-};
-
-
 
 /***/ }),
 
@@ -51818,6 +51873,30 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/config/alert_types.js":
+/*!********************************************!*\
+  !*** ./resources/js/config/alert_types.js ***!
+  \********************************************/
+/*! exports provided: SHOW_ALERT, success_alert, error_alert */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SHOW_ALERT", function() { return SHOW_ALERT; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "success_alert", function() { return success_alert; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "error_alert", function() { return error_alert; });
+var SHOW_ALERT = 'SHOW_ALERT';
+var success_alert = {
+  type: 'alert-success',
+  title: 'Ваш отзыв успешно отправлен!'
+};
+var error_alert = {
+  type: 'alert-danger',
+  title: 'К сожалению, произошла ошибка...'
+};
+
+/***/ }),
+
 /***/ "./resources/js/config/feedback.js":
 /*!*****************************************!*\
   !*** ./resources/js/config/feedback.js ***!
@@ -51831,6 +51910,25 @@ __webpack_require__.r(__webpack_exports__);
   host: 'http://127.0.0.1:4333',
   create_url: '/api/feedbacks'
 });
+
+/***/ }),
+
+/***/ "./resources/js/config/uploadways.js":
+/*!*******************************************!*\
+  !*** ./resources/js/config/uploadways.js ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ([{
+  name: 'database_save',
+  title: 'Сохранить в базу данных'
+}, {
+  name: 'file_save',
+  title: 'Сохранить в файл'
+}]);
 
 /***/ }),
 
