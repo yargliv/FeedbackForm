@@ -1,6 +1,6 @@
 ### Как установить и запустить
 
-1. **git clone https://github.com/yargliv/FeedbackForm **
+1. **git clone https://github.com/yargliv/FeedbackForm**
 2. **cd FeedbackForm**
 3. **composer install**
 4. **npm install**
