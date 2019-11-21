@@ -12,5 +12,5 @@
 11. **php artisan storage:link**
 12. **php artisan serve**
 
-Сайт крутится на **localhost:8000**
-Отзывы сохраняются либо в базу данных (таблица **feedbacks**), либо в файл **feedbacks.json** (полный путь '**storage/app/public/feedbacks/feedbacks.json**')
+Сайт крутится на **localhost:8000**.
+Отзывы сохраняются либо в базу данных (таблица **feedbacks**), либо в файл **feedbacks.json** (полный путь '**storage/app/public/feedbacks/feedbacks.json**').
