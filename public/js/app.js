@@ -1851,11 +1851,13 @@ module.exports = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _eventBus__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../eventBus */ "./resources/js/eventBus.js");
+/* harmony import */ var _config_alert_types_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../config/alert_types.js */ "./resources/js/config/alert_types.js");
 //
 //
 //
 //
 //
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -1868,7 +1870,7 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this = this;
 
-    _eventBus__WEBPACK_IMPORTED_MODULE_0__["default"].$on('SHOW_ALERT', function (payload) {
+    _eventBus__WEBPACK_IMPORTED_MODULE_0__["default"].$on(_config_alert_types_js__WEBPACK_IMPORTED_MODULE_1__["SHOW_ALERT"], function (payload) {
       _this.setAlert(payload);
 
       _this.showAlert();

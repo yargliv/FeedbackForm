@@ -6,6 +6,7 @@
 <script>
 
 import eventBus from '../eventBus';
+import {SHOW_ALERT} from '../config/alert_types.js';
 
 export default {
     data() {
@@ -16,7 +17,7 @@ export default {
         }
     },
     mounted() {
-        eventBus.$on('SHOW_ALERT', (payload) => {
+        eventBus.$on(SHOW_ALERT, (payload) => {
             this.setAlert(payload);
             this.showAlert();
         });
