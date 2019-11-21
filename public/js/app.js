@@ -51336,15 +51336,16 @@ function () {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              url = _config_feedback__WEBPACK_IMPORTED_MODULE_2__["default"].host + _config_feedback__WEBPACK_IMPORTED_MODULE_2__["default"].create_url;
-              _context.next = 3;
+              url = "".concat(_config_feedback__WEBPACK_IMPORTED_MODULE_2__["default"].host, ":").concat(_config_feedback__WEBPACK_IMPORTED_MODULE_2__["default"].port).concat(_config_feedback__WEBPACK_IMPORTED_MODULE_2__["default"].create_url);
+              console.log(url);
+              _context.next = 4;
               return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.awrap(axios__WEBPACK_IMPORTED_MODULE_1___default.a.post(url, feedback));
 
-            case 3:
+            case 4:
               response = _context.sent;
               return _context.abrupt("return", response.data);
 
-            case 5:
+            case 6:
             case "end":
               return _context.stop();
           }
@@ -51910,7 +51911,8 @@ var error_alert = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
-  host: 'http://127.0.0.1:8000',
+  port: 8000,
+  host: 'http://127.0.0.1',
   create_url: '/api/feedbacks'
 });
 
