@@ -51337,15 +51337,14 @@ function () {
           switch (_context.prev = _context.next) {
             case 0:
               url = "".concat(_config_feedback__WEBPACK_IMPORTED_MODULE_2__["default"].host, ":").concat(_config_feedback__WEBPACK_IMPORTED_MODULE_2__["default"].port).concat(_config_feedback__WEBPACK_IMPORTED_MODULE_2__["default"].create_url);
-              console.log(url);
-              _context.next = 4;
+              _context.next = 3;
               return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.awrap(axios__WEBPACK_IMPORTED_MODULE_1___default.a.post(url, feedback));
 
-            case 4:
+            case 3:
               response = _context.sent;
               return _context.abrupt("return", response.data);
 
-            case 6:
+            case 5:
             case "end":
               return _context.stop();
           }
