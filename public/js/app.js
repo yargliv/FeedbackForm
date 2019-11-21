@@ -1968,37 +1968,34 @@ __webpack_require__.r(__webpack_exports__);
             case 0:
               feedback = new _Models_Feedback__WEBPACK_IMPORTED_MODULE_5__["default"](this.name, this.phone, this.text, this.uploadway);
               validated = this.validateFields();
-              console.log(validated);
 
               if (!validated) {
-                _context.next = 17;
+                _context.next = 14;
                 break;
               }
 
-              _context.prev = 4;
-              _context.next = 7;
+              _context.prev = 3;
+              _context.next = 6;
               return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.awrap(_Services_FeedbackSender__WEBPACK_IMPORTED_MODULE_6__["default"].create(feedback));
 
-            case 7:
+            case 6:
               result = _context.sent;
-              console.log(result);
               _eventBus__WEBPACK_IMPORTED_MODULE_7__["default"].$emit(_config_alert_types__WEBPACK_IMPORTED_MODULE_8__["SHOW_ALERT"], _config_alert_types__WEBPACK_IMPORTED_MODULE_8__["success_alert"]);
               this.clearFields();
-              _context.next = 17;
+              _context.next = 14;
               break;
 
-            case 13:
-              _context.prev = 13;
-              _context.t0 = _context["catch"](4);
-              console.log('bad');
+            case 11:
+              _context.prev = 11;
+              _context.t0 = _context["catch"](3);
               _eventBus__WEBPACK_IMPORTED_MODULE_7__["default"].$emit(_config_alert_types__WEBPACK_IMPORTED_MODULE_8__["SHOW_ALERT"], _config_alert_types__WEBPACK_IMPORTED_MODULE_8__["error_alert"]);
 
-            case 17:
+            case 14:
             case "end":
               return _context.stop();
           }
         }
-      }, null, this, [[4, 13]]);
+      }, null, this, [[3, 11]]);
     },
     validateFields: function validateFields() {
       if (this.name == '') this.validation.name = true;else this.validation.name = false;
@@ -39109,7 +39106,7 @@ var render = function() {
         },
         [
           _c("option", { attrs: { disabled: "", selected: "" } }, [
-            _vm._v("Выберите куда сохранить файл")
+            _vm._v("Выберите куда сохранить отзыв")
           ]),
           _vm._v(" "),
           _vm._l(_vm.types, function(type) {

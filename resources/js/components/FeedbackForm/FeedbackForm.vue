@@ -53,15 +53,12 @@
             async sendFeedback() {
                 const feedback = new Feedback(this.name, this.phone, this.text, this.uploadway);
                 const validated = this.validateFields();
-                console.log(validated);
                 if(validated) {
                     try {
                         const result = await FeedbackSender.create(feedback);
-                        console.log(result);
                         eventBus.$emit(SHOW_ALERT, success_alert);
                         this.clearFields();
                     } catch(exception) {
-                        console.log('bad');
                         eventBus.$emit(SHOW_ALERT, error_alert);
                     }
                 }
